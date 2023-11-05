@@ -41,11 +41,8 @@ public class ContestUpdater {
     public void checkContests() {
         List<Contest> contests = cfApiHandler.getAvailableContests();
         contests.sort(Comparator.comparing(Contest::getStartTime));
-        // TODO: remove print statements
-        // System.out.println(contests.stream().map(Contest::getId).collect(Collectors.toList()));
         for (Contest contest : contests) {
             if (!rankInfo.hasContest(contest.getId())) {
-                // System.out.printf("UPDATING CONTEST %d%n", contest.getId());
                 this.updateContest(contest);
             }
         }

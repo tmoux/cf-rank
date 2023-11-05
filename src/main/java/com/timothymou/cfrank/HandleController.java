@@ -31,7 +31,6 @@ public class HandleController {
 
     @GetMapping("/gethandle")
     public List<ContestRankUpdate> getHandle(@RequestParam(value = "handle") String handle) {
-        // TODO: Sort rating changes by their start time. (Probably need to read start times from contest repository)
         List<CfRatingChange> cfRatingChanges = repository.findByHandle(handle);
         ArrayList<ContestRankUpdate> ranks = new ArrayList<>(cfRatingChanges.stream()
                 .map(c -> getContestRankUpdate(c.getContestId(), c.getNewRating())).
