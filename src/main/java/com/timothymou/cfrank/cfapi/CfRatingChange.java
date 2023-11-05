@@ -10,16 +10,17 @@ import lombok.Getter;
 
 @Entity
 @EqualsAndHashCode
+@Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CfRatingChange {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
-  @Getter private Integer contestId;
-  @Getter private String handle;
-  @Getter private Integer oldRating;
-  @Getter private Integer newRating;
+  private Integer contestId;
+  private String handle;
+  private Integer oldRating;
+  private Integer newRating;
 
   protected CfRatingChange() {}
 

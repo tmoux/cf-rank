@@ -1,15 +1,13 @@
 package com.timothymou.cfrank;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
-
 import com.timothymou.cfrank.cfapi.Contest;
 import org.junit.jupiter.api.Test;
-
-import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
 
 @SpringBootTest
 public class ContestUpdaterTest {
@@ -25,6 +23,7 @@ public class ContestUpdaterTest {
 
     @Test
     public void updateContestSucceeds() {
+        // TODO: instead of calling actual API, using MockBean with downloaded test data
         Contest contest = new Contest(1889, 0L);
         controller.updateContest(contest);
 
