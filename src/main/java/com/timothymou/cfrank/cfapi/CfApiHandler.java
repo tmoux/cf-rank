@@ -38,9 +38,8 @@ public class CfApiHandler implements ICfApiHandler {
         // filter for only CF (as opposed to e.g., ICPC) contests
         List<CfContest> contests = response.getBody().result();
         contests = contests.subList(0, 10); // TODO: LIMIT FOR TESTING PURPOSES, fix this later
-        // TODO: don't filter by CF contest type, this ignore educational/Div. 3 rounds.
         return contests.stream()
-                .filter(c -> c.type().equals("CF") && c.phase().equals("FINISHED"))
+                .filter(c -> c.phase().equals("FINISHED"))
                 .map(Contest::new)
                 .collect(Collectors.toList());
     }
