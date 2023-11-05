@@ -1,5 +1,6 @@
 package com.timothymou.cfrank;
 
+import com.timothymou.cfrank.cfapi.Contest;
 import com.timothymou.cfrank.cfapi.ICfApiHandler;
 import com.timothymou.cfrank.cfapi.SampleContestData;
 import org.junit.jupiter.api.Test;
@@ -28,7 +29,7 @@ public class HandleControllerTest {
     @Test
     public void testGetHandleInfo() {
         when(mockCfApiHandler.getRatingChangesFromContest(1)).thenReturn(Optional.of(SampleContestData.contest1));
-        contestController.updateContest(1);
+        contestController.updateContest(new Contest(1, 1L));
         // mockCfApiHandler.getRatingChangesFromContest(1);
         verify(mockCfApiHandler).getRatingChangesFromContest(1);
         // verify(mockCfApiHandler).getAvailableContests();
@@ -37,7 +38,7 @@ public class HandleControllerTest {
         assertThat(handleController.getHandle("A")).isEqualTo(expectedA1);
 
         when(mockCfApiHandler.getRatingChangesFromContest(2)).thenReturn(Optional.of(SampleContestData.contest2));
-        contestController.updateContest(2);
+        contestController.updateContest(new Contest(2, 2L));
         verify(mockCfApiHandler).getRatingChangesFromContest(2);
 
         List<Integer> expectedA2 = List.of(2, 2);
@@ -51,7 +52,7 @@ public class HandleControllerTest {
         assertThat(handleController.getHandle("notARealHandle")).isEqualTo(List.of());
 
         when(mockCfApiHandler.getRatingChangesFromContest(3)).thenReturn(Optional.of(SampleContestData.contest3));
-        contestController.updateContest(3);
+        contestController.updateContest(new Contest(3, 3L));
         verify(mockCfApiHandler).getRatingChangesFromContest(3);
 
         List<Integer> expectedA3 = List.of(2, 2, 4);

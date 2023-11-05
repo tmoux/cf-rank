@@ -26,7 +26,7 @@ public class CfApiHandlerTest {
 
   @Test
   public void getAvailableContestsSucceeds() {
-    List<CfContest> contests = apiHandler.getAvailableContests();
+    List<Contest> contests = apiHandler.getAvailableContests();
     System.out.println(contests.size());
     // assertThat(contests).hasSizeGreaterThan(1300);
   }

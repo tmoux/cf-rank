@@ -1,29 +1,28 @@
 package com.timothymou.cfrank;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.timothymou.cfrank.cfapi.CfRatingChange;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
 @RestController
 public class HandleController {
-    // TODO: add Contest repository
+    private final ContestRepository contestRepository;
     private final RatingChangeRepository repository;
     private final RankInfo rankInfo;
 
     public HandleController(
-            RatingChangeRepository repository, RankInfo rankInfo) {
+            ContestRepository contestRepository, RatingChangeRepository repository, RankInfo rankInfo) {
+        this.contestRepository = contestRepository;
         this.repository = repository;
         this.rankInfo = rankInfo;
     }
 
     @GetMapping("/gethandle")
+    // TODO: Instead of returning a list, should return a list of pairs (rank, contest)
     public List<Integer> getHandle(@RequestParam(value = "handle") String handle) {
         // TODO: Sort rating changes by their start time.
         List<CfRatingChange> cfRatingChanges = repository.findByHandle(handle);

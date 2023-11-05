@@ -63,9 +63,9 @@ API interface:
 
 - GET /gethandle?handle={handle}: Get a handle's ranks (active/inactive)
 
-Todo:
-- Add repository for contests and start time
+TODO:
+- Add repository for contests and start time (in HandleController get function)
+- Ensure contests are processed in order of start time
 - Write http API tests? (random port, mockmvc)?
-- Actually don't even need to make the update part of the API, right?
 - Make sure RankInfo handles out-of-order updates properly (probably just recompute everything)
  */

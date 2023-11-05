@@ -8,8 +8,6 @@ import jakarta.persistence.Id;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
-
-// TODO: Change this to a record?
 @Entity
 @EqualsAndHashCode
 @JsonIgnoreProperties(ignoreUnknown = true)
