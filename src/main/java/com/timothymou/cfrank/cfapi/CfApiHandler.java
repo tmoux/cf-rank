@@ -37,7 +37,6 @@ public class CfApiHandler implements ICfApiHandler {
         ResponseEntity<CfContestList> response = restTemplate.getForEntity(url, CfContestList.class);
         // filter for only CF (as opposed to e.g., ICPC) contests
         List<CfContest> contests = response.getBody().result();
-        contests = contests.subList(0, 10); // TODO: LIMIT FOR TESTING PURPOSES, fix this later
         return contests.stream()
                 .filter(c -> c.phase().equals("FINISHED"))
                 .map(Contest::new)

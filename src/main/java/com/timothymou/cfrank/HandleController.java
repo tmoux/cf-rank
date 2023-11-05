@@ -1,6 +1,7 @@
 package com.timothymou.cfrank;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import com.timothymou.cfrank.cfapi.CfRatingChange;
@@ -21,19 +22,27 @@ public class HandleController {
         this.rankInfo = rankInfo;
     }
 
+    private ContestRankUpdate getContestRankUpdate(Integer contestId, Integer rating) {
+        return new ContestRankUpdate(
+                contestRepository.findById(contestId).get(),
+                rankInfo.queryRank(contestId, rating)
+        );
+    }
+
     @GetMapping("/gethandle")
-    // TODO: Instead of returning a list, should return a list of pairs (rank, contest)
-    public List<Integer> getHandle(@RequestParam(value = "handle") String handle) {
-        // TODO: Sort rating changes by their start time.
+    public List<ContestRankUpdate> getHandle(@RequestParam(value = "handle") String handle) {
+        // TODO: Sort rating changes by their start time. (Probably need to read start times from contest repository)
         List<CfRatingChange> cfRatingChanges = repository.findByHandle(handle);
-        ArrayList<Integer> ranks = new ArrayList<>(cfRatingChanges.stream()
-                .map(c -> rankInfo.queryRank(c.getContestId(), c.getNewRating())).toList());
+        ArrayList<ContestRankUpdate> ranks = new ArrayList<>(cfRatingChanges.stream()
+                .map(c -> getContestRankUpdate(c.getContestId(), c.getNewRating())).
+                toList());
+        ranks.sort(Comparator.comparing(c -> c.contest().getStartTime()));
         Integer lastContest = rankInfo.getLastContestId();
         if (!cfRatingChanges.isEmpty()) {
             Integer lastContestForHandle = cfRatingChanges.get(cfRatingChanges.size() - 1).getContestId();
             if (!lastContestForHandle.equals(lastContest)) {
                 Integer currentRating = rankInfo.getCurrentRating(handle);
-                ranks.add(rankInfo.queryRank(rankInfo.getLastContestId(), currentRating));
+                ranks.add(getContestRankUpdate(lastContest, currentRating));
             }
         }
         return ranks;

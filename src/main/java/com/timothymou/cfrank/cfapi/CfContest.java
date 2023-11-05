@@ -8,5 +8,3 @@ import lombok.EqualsAndHashCode;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record CfContest(Integer id, String type, Long startTimeSeconds, String phase) {}
-
-// TODO: remove unnecessary stuff (type, phase), create new entity for storing in repository

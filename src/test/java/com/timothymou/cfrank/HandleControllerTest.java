@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,22 +30,30 @@ public class HandleControllerTest {
     @Test
     public void testGetHandleInfo() {
         when(mockCfApiHandler.getRatingChangesFromContest(1)).thenReturn(Optional.of(SampleContestData.contest1));
-        contestController.updateContest(new Contest(1, 1L));
-        // mockCfApiHandler.getRatingChangesFromContest(1);
+        Contest c1 = new Contest(1, 1L);
+        contestController.updateContest(c1);
         verify(mockCfApiHandler).getRatingChangesFromContest(1);
-        // verify(mockCfApiHandler).getAvailableContests();
 
-        List<Integer> expectedA1 = List.of(2);
+        List<ContestRankUpdate> expectedA1 = List.of(new ContestRankUpdate(c1, 2));
         assertThat(handleController.getHandle("A")).isEqualTo(expectedA1);
 
+
         when(mockCfApiHandler.getRatingChangesFromContest(2)).thenReturn(Optional.of(SampleContestData.contest2));
-        contestController.updateContest(new Contest(2, 2L));
+        Contest c2 = new Contest(2, 2L);
+        contestController.updateContest(c2);
         verify(mockCfApiHandler).getRatingChangesFromContest(2);
 
-        List<Integer> expectedA2 = List.of(2, 2);
-        List<Integer> expectedB2 = List.of(1, 4);
-        List<Integer> expectedC2 = List.of(3, 4);
-        List<Integer> expectedD2 = List.of(1);
+        List<ContestRankUpdate> expectedA2 = List.of(
+                new ContestRankUpdate(c1, 2),
+                new ContestRankUpdate(c2, 2));
+        List<ContestRankUpdate> expectedB2 = List.of(
+                new ContestRankUpdate(c1, 1),
+                new ContestRankUpdate(c2, 4));
+        List<ContestRankUpdate> expectedC2 = List.of(
+                new ContestRankUpdate(c1, 3),
+                new ContestRankUpdate(c2, 4));
+        List<ContestRankUpdate> expectedD2 = List.of(
+                new ContestRankUpdate(c2, 1));
         assertThat(handleController.getHandle("A")).isEqualTo(expectedA2);
         assertThat(handleController.getHandle("B")).isEqualTo(expectedB2);
         assertThat(handleController.getHandle("C")).isEqualTo(expectedC2);
@@ -52,12 +61,20 @@ public class HandleControllerTest {
         assertThat(handleController.getHandle("notARealHandle")).isEqualTo(List.of());
 
         when(mockCfApiHandler.getRatingChangesFromContest(3)).thenReturn(Optional.of(SampleContestData.contest3));
-        contestController.updateContest(new Contest(3, 3L));
+        Contest c3 = new Contest(3, 3L);
+        contestController.updateContest(c3);
         verify(mockCfApiHandler).getRatingChangesFromContest(3);
 
-        List<Integer> expectedA3 = List.of(2, 2, 4);
-        List<Integer> expectedD3 = List.of(1, 1);
+        List<ContestRankUpdate> expectedA3 = List.of(
+                new ContestRankUpdate(c1, 2),
+                new ContestRankUpdate(c2, 2),
+                new ContestRankUpdate(c3, 4));
+        List<ContestRankUpdate> expectedD3 = List.of(
+                new ContestRankUpdate(c2, 1),
+                new ContestRankUpdate(c3, 1));
         assertThat(handleController.getHandle("A")).isEqualTo(expectedA3);
         assertThat(handleController.getHandle("D")).isEqualTo(expectedD3);
     }
+
+    // TODO: test adding in non-chronological order (have to update RankInfo first)
 }

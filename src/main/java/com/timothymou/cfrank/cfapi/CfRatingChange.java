@@ -7,11 +7,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 
 @Entity
 @EqualsAndHashCode
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
+@ToString
 public class CfRatingChange {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,12 +31,5 @@ public class CfRatingChange {
     this.handle = handle;
     this.oldRating = oldRating;
     this.newRating = newRating;
-  }
-
-  @Override
-  public String toString() {
-    return String.format(
-        "RatingChange[id = %d, contestId = %d, handle = %s, oldRating = %d, newRating = %d]",
-        this.id, contestId, handle, oldRating, newRating);
   }
 }
