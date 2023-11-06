@@ -31,15 +31,13 @@ public class CfApiHandler implements ICfApiHandler {
     }
 
     @Override
-    public List<Contest> getAvailableContests() {
+    public List<CfContest> getAvailableContests() {
         rateLimiter.acquire();
         String url = "https://codeforces.com/api/contest.list";
         ResponseEntity<CfContestList> response = restTemplate.getForEntity(url, CfContestList.class);
-        // filter for only CF (as opposed to e.g., ICPC) contests
         List<CfContest> contests = response.getBody().result();
         return contests.stream()
                 .filter(c -> c.phase().equals("FINISHED"))
-                .map(Contest::new)
                 .collect(Collectors.toList());
     }
 }

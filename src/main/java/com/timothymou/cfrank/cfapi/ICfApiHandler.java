@@ -11,5 +11,5 @@ import java.util.Optional;
 public interface ICfApiHandler {
   public Optional<List<CfRatingChange>> getRatingChangesFromContest(Integer contestId);
 
-  public List<Contest> getAvailableContests();
+  public List<CfContest> getAvailableContests();
 }

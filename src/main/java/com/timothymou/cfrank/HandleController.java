@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import com.timothymou.cfrank.cfapi.CfRatingChange;
+import com.timothymou.cfrank.cfapi.RatingChange;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,10 +32,10 @@ public class HandleController {
 
     @GetMapping("/gethandle")
     public List<ContestRankUpdate> getHandle(@RequestParam(value = "handle") String handle) {
-        List<CfRatingChange> cfRatingChanges = repository.findByHandle(handle);
+        List<RatingChange> cfRatingChanges = repository.findByHandle(handle);
         ArrayList<ContestRankUpdate> ranks = new ArrayList<>(cfRatingChanges.stream()
+                .sorted(Comparator.comparing(c -> c.getContest().getStartTime()))
                 .map(c -> getContestRankUpdate(c.getContestId(), c.getNewRating()))
-                .sorted(Comparator.comparing(c -> c.contest().getStartTime()))
                 .toList());
         Integer lastContest = rankInfo.getLastContestId();
         if (!cfRatingChanges.isEmpty()) {

@@ -14,8 +14,8 @@ public class CfApiHandlerTest {
 
   @Test
   public void getRatingChangesFromContestSucceeds() {
+    Contest contest = new Contest(1889, 0L);
     List<CfRatingChange> cfRatingChanges = apiHandler.getRatingChangesFromContest(1889).get();
-    cfRatingChanges.subList(0, 5).forEach(System.out::println);
     CfRatingChange r1 = new CfRatingChange(1889, "Benq", 3724, 3833);
     CfRatingChange r2 = new CfRatingChange(1889, "Petr", 3134, 3333);
     CfRatingChange r3 = new CfRatingChange(1889, "ecnerwala", 3354, 3466);
@@ -26,7 +26,7 @@ public class CfApiHandlerTest {
 
   @Test
   public void getAvailableContestsSucceeds() {
-    List<Contest> contests = apiHandler.getAvailableContests();
+    List<CfContest> contests = apiHandler.getAvailableContests();
     assertThat(contests).hasSizeGreaterThan(1300);
   }
 }

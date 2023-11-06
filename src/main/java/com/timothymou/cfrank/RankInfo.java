@@ -7,16 +7,17 @@ import java.util.List;
 import java.util.Map;
 
 import com.timothymou.cfrank.cfapi.CfRatingChange;
+import com.timothymou.cfrank.cfapi.RatingChange;
 import lombok.Getter;
 
-// Answers the question "what global rank would rating R be after contest C"?
+// Answers the question "what global rank would a rating R be after contest C"?
 public class RankInfo {
+    private static final int MIN_RATING = -100;
+    private static final int MAX_RATING = 5000; // add some buffer for tourist :)
+
     private static int clamp(int x) {
         return Math.max(MIN_RATING, Math.min(MAX_RATING, x));
     }
-
-    private static final int MIN_RATING = -100;
-    private static final int MAX_RATING = 5000; // add some buffer for tourist :)
     private final Map<Integer, Map<Integer, Integer>> contestIdToRanks;
     private final Map<String, Integer> handleToCurrentRating;
     @Getter
@@ -51,7 +52,7 @@ public class RankInfo {
         return handleToCurrentRating.get(handle);
     }
 
-    public void addContest(Integer contestId, List<CfRatingChange> cfRatingChanges) {
+    public void addContest(Integer contestId, List<RatingChange> cfRatingChanges) {
         assert (!contestIdToRanks.containsKey(contestId));
         Map<Integer, Integer> frequencies;
         if (lastContestId != null) {
@@ -60,7 +61,7 @@ public class RankInfo {
             frequencies = new HashMap<>();
             for (int i = MIN_RATING; i <= MAX_RATING; i++) frequencies.put(i, 0);
         }
-        for (CfRatingChange r : cfRatingChanges) {
+        for (RatingChange r : cfRatingChanges) {
             Integer oldRating = clamp(r.getOldRating());
             Integer newRating = clamp(r.getNewRating());
             if (handleToCurrentRating.containsKey(r.getHandle())) {

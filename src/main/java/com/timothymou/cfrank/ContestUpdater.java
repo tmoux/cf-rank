@@ -3,12 +3,12 @@ package com.timothymou.cfrank;
 import com.timothymou.cfrank.cfapi.CfRatingChange;
 import com.timothymou.cfrank.cfapi.Contest;
 import com.timothymou.cfrank.cfapi.ICfApiHandler;
+import com.timothymou.cfrank.cfapi.RatingChange;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 // The ContestUpdater has methods for checking for available contests,
 // and adding new rating changes to the repository and rankInfo data structure.
@@ -32,7 +32,9 @@ public class ContestUpdater {
         Optional<List<CfRatingChange>> cfRatingChangesOption = cfApiHandler.getRatingChangesFromContest(contest.getId());
         if (cfRatingChangesOption.isPresent()) {
             contestRepository.save(contest);
-            List<CfRatingChange> cfRatingChanges = cfRatingChangesOption.get();
+            List<RatingChange> cfRatingChanges = cfRatingChangesOption.get()
+                    .stream()
+                    .map(c -> new RatingChange(contest, c)).toList();
             rankInfo.addContest(contest.getId(), cfRatingChanges);
             repository.saveAll(cfRatingChanges);
         }
@@ -41,6 +43,7 @@ public class ContestUpdater {
     public void checkContests() {
         List<Contest> contests = cfApiHandler.getAvailableContests()
                 .stream()
+                .map(Contest::new)
                 .sorted(Comparator.comparing(Contest::getStartTime)).toList();
         for (Contest contest : contests) {
             if (!rankInfo.hasContest(contest.getId())) {

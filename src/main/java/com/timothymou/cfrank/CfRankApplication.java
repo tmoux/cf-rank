@@ -17,7 +17,7 @@ public class CfRankApplication {
     SpringApplication.run(CfRankApplication.class, args);
   }
 
-  // @Bean
+/*  // @Bean
   public CommandLineRunner demo(RatingChangeRepository repository) {
     return args -> {
       repository.save(new CfRatingChange(1000, "silxi", 1200, 1250));
@@ -29,7 +29,7 @@ public class CfRankApplication {
       log.info("");
       repository.findByHandle("silxi").forEach(change -> log.info(change.toString()));
     };
-  }
+  }*/
 }
 
 /*

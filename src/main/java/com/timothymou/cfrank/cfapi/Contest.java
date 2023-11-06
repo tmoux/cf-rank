@@ -16,7 +16,7 @@ public class Contest {
 
     private Long startTime;
 
-    Contest() {
+    protected Contest() {
     }
 
     public Contest(Integer id, Long startTime) {
@@ -24,7 +24,7 @@ public class Contest {
         this.startTime = startTime;
     }
 
-    Contest(CfContest c) {
+    public Contest(CfContest c) {
         this(c.id(), c.startTimeSeconds());
     }
 }

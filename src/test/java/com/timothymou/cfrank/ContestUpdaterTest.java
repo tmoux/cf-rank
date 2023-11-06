@@ -1,10 +1,7 @@
 package com.timothymou.cfrank;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.timothymou.cfrank.cfapi.CfRatingChange;
-import com.timothymou.cfrank.cfapi.CfRatingChangeList;
-import com.timothymou.cfrank.cfapi.Contest;
-import com.timothymou.cfrank.cfapi.ICfApiHandler;
+import com.timothymou.cfrank.cfapi.*;
 import org.junit.jupiter.api.Test;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
@@ -49,9 +46,10 @@ public class ContestUpdaterTest {
         File cf1889File = new ClassPathResource("1889.json").getFile();
         List<CfRatingChange> cf1889List = objectMapper.readValue(cf1889File, CfRatingChangeList.class).result();
 
-        when(cfApiHandler.getRatingChangesFromContest(1889)).thenReturn(Optional.of(cf1889List));
-
         Contest contest = new Contest(1889, 0L);
+
+        when(cfApiHandler.getRatingChangesFromContest(contest.getId())).thenReturn(Optional.of(cf1889List));
+
         contestUpdater.updateContest(contest);
 
         verify(contestRepository).save(contest);
@@ -64,11 +62,12 @@ public class ContestUpdaterTest {
 
     @Test
     public void checkContestsSucceeds() {
-        List<Contest> contests = List.of(
-                new Contest(1, 5L),
-                new Contest(2, 3L),
-                new Contest(3, 10L),
-                new Contest(4, 2L));
+        List<CfContest> contests = List.of(
+                new CfContest(1, "CF", 5L, "FINISHED"),
+                new CfContest(2, "CF", 3L, "FINISHED"),
+                new CfContest(3, "CF", 10L, "FINISHED"),
+                new CfContest(4, "CF", 2L, "FINISHED"),
+                new CfContest(5, "CF", 0L, "BEFORE"));
         when(cfApiHandler.getAvailableContests()).thenReturn(contests);
         when(cfApiHandler.getRatingChangesFromContest(Mockito.any())).thenReturn(Optional.empty());
 
