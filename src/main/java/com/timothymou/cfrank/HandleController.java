@@ -33,9 +33,9 @@ public class HandleController {
     public List<ContestRankUpdate> getHandle(@RequestParam(value = "handle") String handle) {
         List<CfRatingChange> cfRatingChanges = repository.findByHandle(handle);
         ArrayList<ContestRankUpdate> ranks = new ArrayList<>(cfRatingChanges.stream()
-                .map(c -> getContestRankUpdate(c.getContestId(), c.getNewRating())).
-                toList());
-        ranks.sort(Comparator.comparing(c -> c.contest().getStartTime()));
+                .map(c -> getContestRankUpdate(c.getContestId(), c.getNewRating()))
+                .sorted(Comparator.comparing(c -> c.contest().getStartTime()))
+                .toList());
         Integer lastContest = rankInfo.getLastContestId();
         if (!cfRatingChanges.isEmpty()) {
             Integer lastContestForHandle = cfRatingChanges.get(cfRatingChanges.size() - 1).getContestId();

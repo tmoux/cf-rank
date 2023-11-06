@@ -6,6 +6,7 @@ import com.timothymou.cfrank.cfapi.CfRatingChangeList;
 import com.timothymou.cfrank.cfapi.Contest;
 import com.timothymou.cfrank.cfapi.ICfApiHandler;
 import org.junit.jupiter.api.Test;
+import org.mockito.InOrder;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,6 +16,7 @@ import org.springframework.core.io.ClassPathResource;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,13 +30,12 @@ public class ContestUpdaterTest {
     ObjectMapper objectMapper;
 
     @Autowired
-    private ContestUpdater controller;
+    @SpyBean
+    private ContestUpdater contestUpdater;
 
     @Autowired
     @SpyBean
     private RatingChangeRepository ratingChangeRepository;
-
-
 
     @Autowired
     @SpyBean
@@ -51,7 +52,7 @@ public class ContestUpdaterTest {
         when(cfApiHandler.getRatingChangesFromContest(1889)).thenReturn(Optional.of(cf1889List));
 
         Contest contest = new Contest(1889, 0L);
-        controller.updateContest(contest);
+        contestUpdater.updateContest(contest);
 
         verify(contestRepository).save(contest);
         verify(ratingChangeRepository).saveAll(Mockito.any());
@@ -62,7 +63,21 @@ public class ContestUpdaterTest {
     }
 
     @Test
-    public void checkContestsSucceeds() throws IOException {
-        // TODO: add test for check contests (test ordering of times)
+    public void checkContestsSucceeds() {
+        List<Contest> contests = List.of(
+                new Contest(1, 5L),
+                new Contest(2, 3L),
+                new Contest(3, 10L),
+                new Contest(4, 2L));
+        when(cfApiHandler.getAvailableContests()).thenReturn(contests);
+        when(cfApiHandler.getRatingChangesFromContest(Mockito.any())).thenReturn(Optional.empty());
+
+        contestUpdater.checkContests();
+
+        InOrder orderVerifier = Mockito.inOrder(contestUpdater);
+        orderVerifier.verify(contestUpdater).updateContest(new Contest(4, 2L));
+        orderVerifier.verify(contestUpdater).updateContest(new Contest(2, 3L));
+        orderVerifier.verify(contestUpdater).updateContest(new Contest(1, 5L));
+        orderVerifier.verify(contestUpdater).updateContest(new Contest(3, 10L));
     }
 }
