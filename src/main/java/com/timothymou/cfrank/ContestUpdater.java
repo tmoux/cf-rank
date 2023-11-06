@@ -35,7 +35,7 @@ public class ContestUpdater {
             List<RatingChange> cfRatingChanges = cfRatingChangesOption.get()
                     .stream()
                     .map(c -> new RatingChange(contest, c)).toList();
-            rankInfo.addContest(contest.getId(), cfRatingChanges);
+            rankInfo.addContest(contest, cfRatingChanges);
             repository.saveAll(cfRatingChanges);
         }
     }

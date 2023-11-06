@@ -1,12 +1,10 @@
 package com.timothymou.cfrank;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.timothymou.cfrank.cfapi.CfRatingChange;
+import com.timothymou.cfrank.cfapi.Contest;
 import com.timothymou.cfrank.cfapi.RatingChange;
 import lombok.Getter;
 
@@ -21,7 +19,7 @@ public class RankInfo {
     private final Map<Integer, Map<Integer, Integer>> contestIdToRanks;
     private final Map<String, Integer> handleToCurrentRating;
     @Getter
-    private Integer lastContestId;
+    private Contest lastContest;
 
     private static Map<Integer, Integer> rankToFreq(Map<Integer, Integer> e) {
         Map<Integer, Integer> f = new HashMap<>(e);
@@ -52,11 +50,11 @@ public class RankInfo {
         return handleToCurrentRating.get(handle);
     }
 
-    public void addContest(Integer contestId, List<RatingChange> cfRatingChanges) {
-        assert (!contestIdToRanks.containsKey(contestId));
+    public void addContest(Contest contest, List<RatingChange> cfRatingChanges) {
+        assert (!contestIdToRanks.containsKey(contest));
         Map<Integer, Integer> frequencies;
-        if (lastContestId != null) {
-            frequencies = rankToFreq(contestIdToRanks.get(lastContestId));
+        if (lastContest != null) {
+            frequencies = rankToFreq(contestIdToRanks.get(lastContest.getId()));
         } else {
             frequencies = new HashMap<>();
             for (int i = MIN_RATING; i <= MAX_RATING; i++) frequencies.put(i, 0);
@@ -73,8 +71,8 @@ public class RankInfo {
         }
         Map<Integer, Integer> newRanks = freqToRank(frequencies);
 
-        contestIdToRanks.put(contestId, newRanks);
-        this.lastContestId = contestId;
+        contestIdToRanks.put(contest.getId(), newRanks);
+        this.lastContest = contest;
     }
 
     public Integer queryRank(Integer contestId, Integer rating) {
