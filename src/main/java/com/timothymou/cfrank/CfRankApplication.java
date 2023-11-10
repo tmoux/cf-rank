@@ -1,9 +1,7 @@
 package com.timothymou.cfrank;
 
-import com.timothymou.cfrank.cfapi.CfRatingChange;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -17,19 +15,6 @@ public class CfRankApplication {
     SpringApplication.run(CfRankApplication.class, args);
   }
 
-/*  // @Bean
-  public CommandLineRunner demo(RatingChangeRepository repository) {
-    return args -> {
-      repository.save(new CfRatingChange(1000, "silxi", 1200, 1250));
-      repository.save(new CfRatingChange(1000, "abc", 3000, 2500));
-      repository.save(new CfRatingChange(1100, "silxi", 1250, 1300));
-
-      log.info("RATING CHANGES found with findAll()");
-      repository.findAll().forEach(change -> log.info(change.toString()));
-      log.info("");
-      repository.findByHandle("silxi").forEach(change -> log.info(change.toString()));
-    };
-  }*/
 }
 
 /*
@@ -64,8 +49,9 @@ API interface:
 - GET /gethandle?handle={handle}: Get a handle's ranks (active/inactive)
 
 TODO:
-- Add repository for contests and start time (in HandleController get function)
-- Ensure contests are processed in order of start time
 - Write http API tests? (random port, mockmvc)?
+  - Ensure contests are processed in order of start time
+- Make scheduler only run for non-test environments (use profiles?)
+
 - Make sure RankInfo handles out-of-order updates properly (probably just recompute everything)
  */
