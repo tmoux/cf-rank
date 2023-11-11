@@ -13,7 +13,7 @@ public class ScheduledUpdater {
         this.contestUpdater = contestController;
     }
 
-    @Scheduled(fixedRate = 10000) // TODO: In production, the rate can probably be hourly or even longer.
+    @Scheduled(fixedRate = 4000) // TODO: In production, the rate can probably be hourly or even longer.
     public void checkForNewContests() {
         System.out.println("SHOULD NOT HAPPEN IN TESTING!!!");
         contestUpdater.checkContests();

@@ -45,8 +45,10 @@ public class ContestUpdater {
                 .stream()
                 .map(Contest::new)
                 .sorted(Comparator.comparing(Contest::getStartTime)).toList();
+        System.out.println(contests);
         for (Contest contest : contests) {
             if (!rankInfo.hasContest(contest.getId())) {
+                System.out.format("Updating Contest %d\n" , contest.getId());
                 this.updateContest(contest);
             }
         }

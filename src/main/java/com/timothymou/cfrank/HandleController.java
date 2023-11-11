@@ -1,14 +1,16 @@
 package com.timothymou.cfrank;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-
 import com.timothymou.cfrank.cfapi.Contest;
 import com.timothymou.cfrank.cfapi.RatingChange;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class HandleController {
@@ -24,8 +26,7 @@ public class HandleController {
         return new ContestRankUpdate(contest, rankInfo.queryRank(contest.getId(), rating));
     }
 
-    @GetMapping("/gethandle")
-    public List<ContestRankUpdate> getHandle(@RequestParam(value = "handle") String handle) {
+    public List<ContestRankUpdate> getHandle(String handle) {
         List<RatingChange> cfRatingChanges = repository.findByHandle(handle);
         ArrayList<ContestRankUpdate> ranks = new ArrayList<>(cfRatingChanges.stream()
                 .sorted(Comparator.comparing(c -> c.getContest().getStartTime()))
@@ -40,5 +41,16 @@ public class HandleController {
             }
         }
         return ranks;
+    }
+
+    @GetMapping("/gethandle")
+    public ResponseEntity<List<ContestRankUpdate>> getHandleAPI(@RequestParam(value = "handle") String handle) {
+        List<ContestRankUpdate> rankUpdates = getHandle(handle);
+        if (!rankUpdates.isEmpty()) {
+            return ResponseEntity.of(Optional.of(rankUpdates));
+        }
+        else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
