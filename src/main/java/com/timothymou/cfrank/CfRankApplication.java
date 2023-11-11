@@ -51,7 +51,7 @@ API interface:
 TODO:
 - Write http API tests? (random port, mockmvc)?
   - Ensure contests are processed in order of start time
-- Make scheduler only run for non-test environments (use profiles?)
+- Should we combine Div. 1/ Div. 2 contests?
 
 - Make sure RankInfo handles out-of-order updates properly (probably just recompute everything)
  */

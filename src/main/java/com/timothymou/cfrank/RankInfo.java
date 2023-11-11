@@ -1,12 +1,12 @@
 package com.timothymou.cfrank;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.timothymou.cfrank.cfapi.Contest;
 import com.timothymou.cfrank.cfapi.RatingChange;
 import lombok.Getter;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 // Answers the question "what global rank would a rating R be after contest C"?
 public class RankInfo {
@@ -51,7 +51,7 @@ public class RankInfo {
     }
 
     public void addContest(Contest contest, List<RatingChange> cfRatingChanges) {
-        assert (!contestIdToRanks.containsKey(contest));
+        assert (!contestIdToRanks.containsKey(contest.getId()));
         Map<Integer, Integer> frequencies;
         if (lastContest != null) {
             frequencies = rankToFreq(contestIdToRanks.get(lastContest.getId()));
