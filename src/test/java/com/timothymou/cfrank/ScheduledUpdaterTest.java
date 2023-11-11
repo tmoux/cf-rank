@@ -82,6 +82,7 @@ public class ScheduledUpdaterTest {
         // Refactor test
 
         scheduledUpdater.checkForNewContests();
+        scheduledUpdater.checkForNewContests();
         verify(contestUpdater, times(5)).updateContest(any());
 
         ResponseEntity<List<ContestRankUpdate>> response = restTemplate.exchange(

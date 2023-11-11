@@ -52,6 +52,7 @@ public class RankInfo {
 
     public void addContest(Contest contest, List<RatingChange> cfRatingChanges) {
         assert (!contestIdToRanks.containsKey(contest.getId()));
+        assert (lastContest == null || contest.getStartTime() >= lastContest.getStartTime());
         Map<Integer, Integer> frequencies;
         if (lastContest != null) {
             frequencies = rankToFreq(contestIdToRanks.get(lastContest.getId()));
