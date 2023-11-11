@@ -74,6 +74,4 @@ public class HandleControllerTest {
         assertThat(handleController.getHandle("A")).isEqualTo(expectedA3);
         assertThat(handleController.getHandle("D")).isEqualTo(expectedD3);
     }
-
-    // TODO: test adding in non-chronological order (have to update RankInfo first)
 }

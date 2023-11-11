@@ -4,6 +4,7 @@ import com.timothymou.cfrank.cfapi.CfRatingChange;
 import com.timothymou.cfrank.cfapi.Contest;
 import com.timothymou.cfrank.cfapi.ICfApiHandler;
 import com.timothymou.cfrank.cfapi.RatingChange;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -14,6 +15,7 @@ import java.util.Optional;
 // and adding new rating changes to the repository and rankInfo data structure.
 
 @Service
+@Slf4j
 public class ContestUpdater {
     private final ContestRepository contestRepository;
     private final RatingChangeRepository repository;
@@ -44,11 +46,12 @@ public class ContestUpdater {
         List<Contest> contests = cfApiHandler.getAvailableContests()
                 .stream()
                 .map(Contest::new)
+                .filter(c -> !rankInfo.hasContest(c.getId()))
                 .sorted(Comparator.comparing(Contest::getStartTime)).toList();
-        System.out.println(contests);
+        log.info("Adding contests: {}", contests.stream().map(Contest::getId).toList());
         for (Contest contest : contests) {
             if (!rankInfo.hasContest(contest.getId())) {
-                System.out.format("Updating Contest %d\n" , contest.getId());
+                log.info("Updating contest {}", contest.getId());
                 this.updateContest(contest);
             }
         }

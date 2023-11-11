@@ -34,10 +34,14 @@ public class CfApiHandler implements ICfApiHandler {
     public List<CfContest> getAvailableContests() {
         rateLimiter.acquire();
         String url = "https://codeforces.com/api/contest.list";
-        ResponseEntity<CfContestList> response = restTemplate.getForEntity(url, CfContestList.class);
-        List<CfContest> contests = response.getBody().result();
-        return contests.stream()
-                .filter(c -> c.phase().equals("FINISHED"))
-                .collect(Collectors.toList());
+        try {
+            ResponseEntity<CfContestList> response = restTemplate.getForEntity(url, CfContestList.class);
+            List<CfContest> contests = response.getBody().result();
+            return contests.stream()
+                    .filter(c -> c.phase().equals("FINISHED"))
+                    .collect(Collectors.toList());
+        } catch (HttpClientErrorException e) {
+            return List.of();
+        }
     }
 }
