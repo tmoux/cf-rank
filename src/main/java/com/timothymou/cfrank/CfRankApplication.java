@@ -49,9 +49,8 @@ API interface:
 - GET /gethandle?handle={handle}: Get a handle's ranks (active/inactive)
 
 TODO:
-- Might change RankInfo to initialize from persistent database
-  (Initialize from database when creating bean)
 - Make sure RankInfo handles out-of-order updates properly (probably just recompute everything)
+  - Handle in ContestUpdater
 - Cache unrated contests so we don't needlessly query them again.
 - Fix bug w/ error from CF API (handle 524 error, need out-of-order updates)
 
@@ -66,5 +65,8 @@ TODO:
   - Ensure contests are processed in order of start time
 - Should we combine Div. 1/ Div. 2 contests?
 
+
+400 means bad request, add to list of contests to ignore
+anything else means other problem w/ CF server, ignore
 
  */
