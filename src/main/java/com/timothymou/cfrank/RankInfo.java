@@ -50,7 +50,7 @@ public class RankInfo {
         return handleToCurrentRating.get(handle);
     }
 
-    public void addContest(Contest contest, List<RatingChange> cfRatingChanges) {
+    public void addContest(Contest contest, List<RatingChange> ratingChanges) {
         assert (!contestIdToRanks.containsKey(contest.getId()));
         assert (lastContest == null || contest.getStartTime() >= lastContest.getStartTime());
         Map<Integer, Integer> frequencies;
@@ -60,7 +60,7 @@ public class RankInfo {
             frequencies = new HashMap<>();
             for (int i = MIN_RATING; i <= MAX_RATING; i++) frequencies.put(i, 0);
         }
-        for (RatingChange r : cfRatingChanges) {
+        for (RatingChange r : ratingChanges) {
             Integer oldRating = clamp(r.getOldRating());
             Integer newRating = clamp(r.getNewRating());
             if (handleToCurrentRating.containsKey(r.getHandle())) {

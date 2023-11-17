@@ -49,14 +49,20 @@ API interface:
 - GET /gethandle?handle={handle}: Get a handle's ranks (active/inactive)
 
 TODO:
-- Migrate from H2 to using mysql
-  - Might change RankInfo to initialize from persistent database
-    (Initialize from database when creating bean)
-  - Cache unrated contests so we don't needlessly query them again.
+- Might change RankInfo to initialize from persistent database
+  (Initialize from database when creating bean)
+- Make sure RankInfo handles out-of-order updates properly (probably just recompute everything)
+- Cache unrated contests so we don't needlessly query them again.
+- Fix bug w/ error from CF API (handle 524 error, need out-of-order updates)
+
+- Remove prod profile stuff
+
+- Fix bug w/ capitalization of handles
+- Add handler for root, simple web page UI
 
 - Write http API tests? (random port, mockmvc)?
   - Ensure contests are processed in order of start time
 - Should we combine Div. 1/ Div. 2 contests?
 
-- Make sure RankInfo handles out-of-order updates properly (probably just recompute everything)
+
  */
