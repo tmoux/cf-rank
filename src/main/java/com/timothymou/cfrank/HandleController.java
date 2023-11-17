@@ -35,7 +35,7 @@ public class HandleController {
         Contest lastContest = rankInfo.getLastContest();
         if (!cfRatingChanges.isEmpty()) {
             Contest lastContestForHandle = cfRatingChanges.get(cfRatingChanges.size() - 1).getContest();
-            if (!lastContestForHandle.equals(lastContest)) {
+            if (lastContest != null && !lastContestForHandle.equals(lastContest)) {
                 Integer currentRating = rankInfo.getCurrentRating(handle);
                 ranks.add(getContestRankUpdate(lastContest, currentRating));
             }

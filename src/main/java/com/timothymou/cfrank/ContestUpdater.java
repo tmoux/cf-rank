@@ -18,14 +18,14 @@ import java.util.Optional;
 @Slf4j
 public class ContestUpdater {
     private final ContestRepository contestRepository;
-    private final RatingChangeRepository repository;
+    private final RatingChangeRepository ratingChangeRepository;
     private final ICfApiHandler cfApiHandler;
     private final RankInfo rankInfo;
 
     public ContestUpdater(
-            ContestRepository contestRepository, RatingChangeRepository repository, ICfApiHandler cfApiHandler, RankInfo rankInfo) {
+            ContestRepository contestRepository, RatingChangeRepository ratingChangeRepository, ICfApiHandler cfApiHandler, RankInfo rankInfo) {
         this.contestRepository = contestRepository;
-        this.repository = repository;
+        this.ratingChangeRepository = ratingChangeRepository;
         this.cfApiHandler = cfApiHandler;
         this.rankInfo = rankInfo;
     }
@@ -38,7 +38,7 @@ public class ContestUpdater {
                     .stream()
                     .map(c -> new RatingChange(contest, c)).toList();
             rankInfo.addContest(contest, cfRatingChanges);
-            repository.saveAll(cfRatingChanges);
+            ratingChangeRepository.saveAll(cfRatingChanges);
         }
     }
 

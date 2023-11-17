@@ -60,6 +60,8 @@ TODO:
 - Fix bug w/ capitalization of handles
 - Add handler for root, simple web page UI
 
+- Use offset arraylist instead of map in RankInfo
+
 - Write http API tests? (random port, mockmvc)?
   - Ensure contests are processed in order of start time
 - Should we combine Div. 1/ Div. 2 contests?
