@@ -49,9 +49,10 @@ API interface:
 - GET /gethandle?handle={handle}: Get a handle's ranks (active/inactive)
 
 TODO:
-- Add rating to rank updates (should be straightforward)
 - Migrate from H2 to using mysql
   - Might change RankInfo to initialize from persistent database
+    (Initialize from database when creating bean)
+  - Cache unrated contests so we don't needlessly query them again.
 
 - Write http API tests? (random port, mockmvc)?
   - Ensure contests are processed in order of start time

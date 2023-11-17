@@ -13,7 +13,7 @@ public class SchedulerUpdaterRunner {
         this.scheduledUpdater = scheduledUpdater;
     }
 
-    @Scheduled(fixedRate = 86400) // TODO: In production, the rate can probably be hourly or even longer.
+    @Scheduled(fixedRate = 86400 * 1000) // TODO: In production, the rate can probably be hourly or even longer.
     public void runCheckForNewContests() {
         scheduledUpdater.checkForNewContests();
     }
