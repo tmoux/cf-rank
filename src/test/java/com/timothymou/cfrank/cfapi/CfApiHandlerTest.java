@@ -1,21 +1,18 @@
 package com.timothymou.cfrank.cfapi;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
-import org.junit.jupiter.api.Test;
-
-import org.springframework.web.client.RestTemplate;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class CfApiHandlerTest {
   ICfApiHandler apiHandler = new CfApiHandler(new RestTemplate());
 
   @Test
   public void getRatingChangesFromContestSucceeds() {
-    Contest contest = new Contest(1889, 0L);
-    List<CfRatingChange> cfRatingChanges = apiHandler.getRatingChangesFromContest(1889).get();
+    List<CfRatingChange> cfRatingChanges = apiHandler.getRatingChangesFromContest(1889);
     CfRatingChange r1 = new CfRatingChange(1889, "Benq", 3724, 3833);
     CfRatingChange r2 = new CfRatingChange(1889, "Petr", 3134, 3333);
     CfRatingChange r3 = new CfRatingChange(1889, "ecnerwala", 3354, 3466);

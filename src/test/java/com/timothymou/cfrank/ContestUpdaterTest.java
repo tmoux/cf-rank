@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.test.annotation.DirtiesContext;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,6 +22,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class ContestUpdaterTest {
     @Autowired
     ObjectMapper objectMapper;
@@ -47,10 +49,9 @@ public class ContestUpdaterTest {
 
         Contest contest = new Contest(1889, 0L);
 
-        when(cfApiHandler.getRatingChangesFromContest(contest.getId())).thenReturn(Optional.of(cf1889List));
+        when(cfApiHandler.getRatingChangesFromContest(contest.getId())).thenReturn(cf1889List);
 
         contestUpdater.updateContest(contest);
-
         verify(contestRepository).save(contest);
         verify(ratingChangeRepository).saveAll(Mockito.any());
 
@@ -68,7 +69,7 @@ public class ContestUpdaterTest {
                 new CfContest(4, "CF", 2L, "FINISHED"),
                 new CfContest(5, "CF", 0L, "BEFORE"));
         when(cfApiHandler.getAvailableContests()).thenReturn(contests);
-        when(cfApiHandler.getRatingChangesFromContest(Mockito.any())).thenReturn(Optional.empty());
+        when(cfApiHandler.getRatingChangesFromContest(Mockito.any())).thenReturn(List.of());
 
         contestUpdater.checkContests();
 

@@ -1,6 +1,5 @@
 package com.timothymou.cfrank;
 
-import com.timothymou.cfrank.cfapi.CfRatingChange;
 import com.timothymou.cfrank.cfapi.Contest;
 import com.timothymou.cfrank.cfapi.ICfApiHandler;
 import com.timothymou.cfrank.cfapi.RatingChange;
@@ -9,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 
 // The ContestUpdater has methods for checking for available contests,
 // and adding new rating changes to the repository and rankInfo data structure.
@@ -30,15 +28,32 @@ public class ContestUpdater {
         this.rankInfo = rankInfo;
     }
 
-    public void updateContest(Contest contest) {
-        Optional<List<CfRatingChange>> cfRatingChangesOption = cfApiHandler.getRatingChangesFromContest(contest.getId());
-        if (cfRatingChangesOption.isPresent()) {
-            contestRepository.save(contest);
-            List<RatingChange> cfRatingChanges = cfRatingChangesOption.get()
+    // Need to update cfApiHandler:
+    // Exception if the contest is not rated (400):
+    // Exception if the request failed (5xx error):
+    // Don't handle in fetchRatingUpdates, this just returns a plain old List.
+    // Handle in updateContest:
+    // - If 400, add to list of contests to ignore (do this later)
+    // - Otherwise, just ignore the error and move on.
+    private List<RatingChange> fetchRatingUpdates(Contest contest) {
+        if (contestRepository.existsById(contest.getId())) {
+            return ratingChangeRepository.findAllByContest(contest);
+        } else {
+            return cfApiHandler.getRatingChangesFromContest(contest.getId())
                     .stream()
                     .map(c -> new RatingChange(contest, c)).toList();
+        }
+    }
+
+    public void updateContest(Contest contest) {
+        try {
+            List<RatingChange> cfRatingChanges = fetchRatingUpdates(contest);
+            contestRepository.save(contest);
             rankInfo.addContest(contest, cfRatingChanges);
             ratingChangeRepository.saveAll(cfRatingChanges);
+        } catch (Exception e) {
+            // Ignore for now
+            log.error(e.getMessage());
         }
     }
 

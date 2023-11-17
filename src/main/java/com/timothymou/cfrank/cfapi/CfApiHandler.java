@@ -3,10 +3,10 @@ package com.timothymou.cfrank.cfapi;
 import com.google.common.util.concurrent.RateLimiter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class CfApiHandler implements ICfApiHandler {
@@ -18,16 +18,11 @@ public class CfApiHandler implements ICfApiHandler {
     }
 
     @Override
-    public Optional<List<CfRatingChange>> getRatingChangesFromContest(Integer contestId) {
+    public List<CfRatingChange> getRatingChangesFromContest(Integer contestId) throws HttpClientErrorException, HttpServerErrorException {
         rateLimiter.acquire();
         String url = String.format("https://codeforces.com/api/contest.ratingChanges?contestId=%d", contestId);
-        try {
-            ResponseEntity<CfRatingChangeList> response = restTemplate.getForEntity(url, CfRatingChangeList.class);
-            return Optional.of(response.getBody().result());
-        } catch (HttpClientErrorException e) {
-            // Ignore bad requests (e.g., the contest hasn't started/finished yet)
-            return Optional.empty();
-        }
+        ResponseEntity<CfRatingChangeList> response = restTemplate.getForEntity(url, CfRatingChangeList.class);
+        return response.getBody().result();
     }
 
     @Override

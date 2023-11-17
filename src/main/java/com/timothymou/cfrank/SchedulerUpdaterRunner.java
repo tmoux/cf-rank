@@ -15,7 +15,7 @@ public class SchedulerUpdaterRunner {
         this.scheduledUpdater = scheduledUpdater;
     }
 
-    @Scheduled(fixedRate = 86400 * 1000) // TODO: In production, the rate can probably be hourly or even longer.
+    @Scheduled(fixedRate = 86400 * 1000)
     public void runCheckForNewContests() {
         log.info("Scheduled scan for new contests...");
         scheduledUpdater.checkForNewContests();

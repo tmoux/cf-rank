@@ -9,7 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
@@ -28,7 +27,7 @@ public class HandleControllerTest {
 
     @Test
     public void testGetHandleInfo() {
-        when(mockCfApiHandler.getRatingChangesFromContest(1)).thenReturn(Optional.of(SampleContestData.contest1));
+        when(mockCfApiHandler.getRatingChangesFromContest(1)).thenReturn(SampleContestData.contest1);
         Contest c1 = new Contest(1, 1L);
         contestController.updateContest(c1);
         verify(mockCfApiHandler).getRatingChangesFromContest(1);
@@ -37,7 +36,7 @@ public class HandleControllerTest {
         assertThat(handleController.getHandle("A")).isEqualTo(expectedA1);
 
 
-        when(mockCfApiHandler.getRatingChangesFromContest(2)).thenReturn(Optional.of(SampleContestData.contest2));
+        when(mockCfApiHandler.getRatingChangesFromContest(2)).thenReturn(SampleContestData.contest2);
         Contest c2 = new Contest(2, 2L);
         contestController.updateContest(c2);
         verify(mockCfApiHandler).getRatingChangesFromContest(2);
@@ -59,7 +58,7 @@ public class HandleControllerTest {
         assertThat(handleController.getHandle("D")).isEqualTo(expectedD2);
         assertThat(handleController.getHandle("notARealHandle")).isEqualTo(List.of());
 
-        when(mockCfApiHandler.getRatingChangesFromContest(3)).thenReturn(Optional.of(SampleContestData.contest3));
+        when(mockCfApiHandler.getRatingChangesFromContest(3)).thenReturn(SampleContestData.contest3);
         Contest c3 = new Contest(3, 3L);
         contestController.updateContest(c3);
         verify(mockCfApiHandler).getRatingChangesFromContest(3);

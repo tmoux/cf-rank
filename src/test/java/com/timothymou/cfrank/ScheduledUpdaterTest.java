@@ -17,7 +17,6 @@ import org.springframework.http.ResponseEntity;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
@@ -46,26 +45,26 @@ public class ScheduledUpdaterTest {
         List<CfRatingChange> cf1887List = objectMapper.readValue(
                 new ClassPathResource("1887.json").getFile(),
                 CfRatingChangeList.class).result();
-        when(cfApiHandler.getRatingChangesFromContest(1887)).thenReturn(Optional.of(cf1887List));
+        when(cfApiHandler.getRatingChangesFromContest(1887)).thenReturn(cf1887List);
         List<CfRatingChange> cf1888List = objectMapper.readValue(
                 new ClassPathResource("1888.json").getFile(),
                 CfRatingChangeList.class).result();
-        when(cfApiHandler.getRatingChangesFromContest(1888)).thenReturn(Optional.of(cf1888List));
+        when(cfApiHandler.getRatingChangesFromContest(1888)).thenReturn(cf1888List);
 
         List<CfRatingChange> cf1889List = objectMapper.readValue(
                 new ClassPathResource("1889.json").getFile(),
                 CfRatingChangeList.class).result();
-        when(cfApiHandler.getRatingChangesFromContest(1889)).thenReturn(Optional.of(cf1889List));
+        when(cfApiHandler.getRatingChangesFromContest(1889)).thenReturn(cf1889List);
 
         List<CfRatingChange> cf1890List = objectMapper.readValue(
                 new ClassPathResource("1890.json").getFile(),
                 CfRatingChangeList.class).result();
-        when(cfApiHandler.getRatingChangesFromContest(1890)).thenReturn(Optional.of(cf1890List));
+        when(cfApiHandler.getRatingChangesFromContest(1890)).thenReturn(cf1890List);
 
         List<CfRatingChange> cf1895List = objectMapper.readValue(
                 new ClassPathResource("1895.json").getFile(),
                 CfRatingChangeList.class).result();
-        when(cfApiHandler.getRatingChangesFromContest(1895)).thenReturn(Optional.of(cf1895List));
+        when(cfApiHandler.getRatingChangesFromContest(1895)).thenReturn(cf1895List);
 
         List<CfContest> contests = List.of(
                 new CfContest(1895, "CF", 1699029300L, "FINISHED"),
