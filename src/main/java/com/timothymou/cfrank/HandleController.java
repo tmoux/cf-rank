@@ -46,11 +46,6 @@ public class HandleController {
     @GetMapping("/gethandle")
     public ResponseEntity<List<ContestRankUpdate>> getHandleAPI(@RequestParam(value = "handle") String handle) {
         List<ContestRankUpdate> rankUpdates = getHandle(handle);
-        if (!rankUpdates.isEmpty()) {
-            return ResponseEntity.of(Optional.of(rankUpdates));
-        }
-        else {
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.of(Optional.of(rankUpdates));
     }
 }

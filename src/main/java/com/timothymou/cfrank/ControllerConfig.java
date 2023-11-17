@@ -25,4 +25,8 @@ public class ControllerConfig {
         return new CfApiHandler(restTemplate);
     }
 
+    @Bean
+    public ScheduledUpdater scheduledUpdater(ContestUpdater contestUpdater) {
+        return new ScheduledUpdater(contestUpdater);
+    }
 }

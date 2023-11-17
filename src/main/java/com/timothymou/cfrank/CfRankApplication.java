@@ -49,6 +49,10 @@ API interface:
 - GET /gethandle?handle={handle}: Get a handle's ranks (active/inactive)
 
 TODO:
+- Add rating to rank updates (should be straightforward)
+- Migrate from H2 to using mysql
+  - Might change RankInfo to initialize from persistent database
+
 - Write http API tests? (random port, mockmvc)?
   - Ensure contests are processed in order of start time
 - Should we combine Div. 1/ Div. 2 contests?

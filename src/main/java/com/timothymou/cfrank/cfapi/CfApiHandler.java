@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class CfApiHandler implements ICfApiHandler {
-    private final RateLimiter rateLimiter = RateLimiter.create(0.5);
+    private final RateLimiter rateLimiter = RateLimiter.create(0.4);
     private final RestTemplate restTemplate;
 
     public CfApiHandler(RestTemplate restTemplate) {

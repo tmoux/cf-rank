@@ -51,7 +51,7 @@ public class ContestUpdater {
         log.info("Adding contests: {}", contests.stream().map(Contest::getId).toList());
         for (Contest contest : contests) {
             if (!rankInfo.hasContest(contest.getId())) {
-                log.info("Updating contest {}", contest.getId());
+                log.info("Updating contest {}, time = {}", contest.getId(), contest.getStartTime());
                 this.updateContest(contest);
             }
         }
