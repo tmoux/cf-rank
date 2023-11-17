@@ -6,5 +6,5 @@ import com.timothymou.cfrank.cfapi.Contest;
 // Represents the rank of a user after a contest.
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public record ContestRankUpdate(Contest contest, Integer rank) {
+public record ContestRankUpdate(Contest contest, Integer rank, Integer rating) {
 }

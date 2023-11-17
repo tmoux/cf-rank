@@ -23,7 +23,7 @@ public class HandleController {
     }
 
     private ContestRankUpdate getContestRankUpdate(Contest contest, Integer rating) {
-        return new ContestRankUpdate(contest, rankInfo.queryRank(contest.getId(), rating));
+        return new ContestRankUpdate(contest, rankInfo.queryRank(contest.getId(), rating), rating);
     }
 
     public List<ContestRankUpdate> getHandle(String handle) {

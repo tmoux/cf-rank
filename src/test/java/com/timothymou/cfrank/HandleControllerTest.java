@@ -33,7 +33,7 @@ public class HandleControllerTest {
         contestController.updateContest(c1);
         verify(mockCfApiHandler).getRatingChangesFromContest(1);
 
-        List<ContestRankUpdate> expectedA1 = List.of(new ContestRankUpdate(c1, 2));
+        List<ContestRankUpdate> expectedA1 = List.of(new ContestRankUpdate(c1, 2, 1600));
         assertThat(handleController.getHandle("A")).isEqualTo(expectedA1);
 
 
@@ -43,16 +43,16 @@ public class HandleControllerTest {
         verify(mockCfApiHandler).getRatingChangesFromContest(2);
 
         List<ContestRankUpdate> expectedA2 = List.of(
-                new ContestRankUpdate(c1, 2),
-                new ContestRankUpdate(c2, 2));
+                new ContestRankUpdate(c1, 2, 1600),
+                new ContestRankUpdate(c2, 2, 2000));
         List<ContestRankUpdate> expectedB2 = List.of(
-                new ContestRankUpdate(c1, 1),
-                new ContestRankUpdate(c2, 4));
+                new ContestRankUpdate(c1, 1, 1700),
+                new ContestRankUpdate(c2, 4, 1500));
         List<ContestRankUpdate> expectedC2 = List.of(
-                new ContestRankUpdate(c1, 3),
-                new ContestRankUpdate(c2, 4));
+                new ContestRankUpdate(c1, 3, 1500),
+                new ContestRankUpdate(c2, 4, 1500));
         List<ContestRankUpdate> expectedD2 = List.of(
-                new ContestRankUpdate(c2, 1));
+                new ContestRankUpdate(c2, 1, 2500));
         assertThat(handleController.getHandle("A")).isEqualTo(expectedA2);
         assertThat(handleController.getHandle("B")).isEqualTo(expectedB2);
         assertThat(handleController.getHandle("C")).isEqualTo(expectedC2);
@@ -65,12 +65,12 @@ public class HandleControllerTest {
         verify(mockCfApiHandler).getRatingChangesFromContest(3);
 
         List<ContestRankUpdate> expectedA3 = List.of(
-                new ContestRankUpdate(c1, 2),
-                new ContestRankUpdate(c2, 2),
-                new ContestRankUpdate(c3, 4));
+                new ContestRankUpdate(c1, 2, 1600),
+                new ContestRankUpdate(c2, 2, 2000),
+                new ContestRankUpdate(c3, 4, -10));
         List<ContestRankUpdate> expectedD3 = List.of(
-                new ContestRankUpdate(c2, 1),
-                new ContestRankUpdate(c3, 1));
+                new ContestRankUpdate(c2, 1, 2500),
+                new ContestRankUpdate(c3, 1, 2500));
         assertThat(handleController.getHandle("A")).isEqualTo(expectedA3);
         assertThat(handleController.getHandle("D")).isEqualTo(expectedD3);
     }
