@@ -49,12 +49,8 @@ API interface:
 - GET /gethandle?handle={handle}: Get a handle's ranks (active/inactive)
 
 TODO:
-- Make sure RankInfo handles out-of-order updates properly (probably just recompute everything)
-  - Handle in ContestUpdater
 - Cache unrated contests so we don't needlessly query them again.
 - Fix bug w/ error from CF API (handle 524 error, need out-of-order updates)
-
-- Remove prod profile stuff
 
 - Fix bug w/ capitalization of handles
 - Add handler for root, simple web page UI

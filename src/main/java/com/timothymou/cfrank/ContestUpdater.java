@@ -5,6 +5,7 @@ import com.timothymou.cfrank.cfapi.ICfApiHandler;
 import com.timothymou.cfrank.cfapi.RatingChange;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.Comparator;
 import java.util.List;
@@ -49,9 +50,15 @@ public class ContestUpdater {
         try {
             List<RatingChange> cfRatingChanges = fetchRatingUpdates(contest);
             contestRepository.save(contest);
-            rankInfo.addContest(contest, cfRatingChanges);
             ratingChangeRepository.saveAll(cfRatingChanges);
-        } catch (Exception e) {
+
+            rankInfo.addContestWithUpdates(contest, this::fetchRatingUpdates);
+        }
+        catch (HttpClientErrorException e) {
+            log.info(e.getMessage());
+            log.info("4xx error for contest {}, assuming it's unrated and ignoring from now on", contest.getId());
+        }
+        catch (Exception e) {
             // Ignore for now
             log.error(e.getMessage());
         }

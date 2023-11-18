@@ -15,8 +15,8 @@ import org.springframework.test.annotation.DirtiesContext;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
+import static com.timothymou.cfrank.cfapi.SampleContestData.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -41,6 +41,9 @@ public class ContestUpdaterTest {
 
     @MockBean
     ICfApiHandler cfApiHandler;
+
+    @Autowired
+    private RankInfo rankInfo;
 
     @Test
     public void updateContestSucceeds() throws IOException {
@@ -78,5 +81,23 @@ public class ContestUpdaterTest {
         orderVerifier.verify(contestUpdater).updateContest(new Contest(2, 3L));
         orderVerifier.verify(contestUpdater).updateContest(new Contest(1, 5L));
         orderVerifier.verify(contestUpdater).updateContest(new Contest(3, 10L));
+    }
+
+    @Test
+    public void checkUpdatingOutOfOrder() {
+        when(cfApiHandler.getRatingChangesFromContest(1)).thenReturn(contest1);
+        when(cfApiHandler.getRatingChangesFromContest(2)).thenReturn(contest2);
+        when(cfApiHandler.getRatingChangesFromContest(3)).thenReturn(contest3);
+
+        contestUpdater.updateContest(C3);
+        contestUpdater.updateContest(C2);
+        contestUpdater.updateContest(C1);
+
+        assertThat(rankInfo.queryRank(3, -10)).isEqualTo(4);
+        assertThat(rankInfo.queryRank(3, 2500)).isEqualTo(1);
+        assertThat(rankInfo.queryRank(2, 1500)).isEqualTo(4);
+        assertThat(rankInfo.queryRank(2, 2500)).isEqualTo(1);
+        assertThat(rankInfo.queryRank(1, 1500)).isEqualTo(3);
+
     }
 }
