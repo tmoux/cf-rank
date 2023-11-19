@@ -27,20 +27,25 @@ public class HandleController {
     }
 
     public List<ContestRankUpdate> getHandle(String handle) {
-        List<RatingChange> cfRatingChanges = repository.findByHandle(handle);
-        ArrayList<ContestRankUpdate> ranks = new ArrayList<>(cfRatingChanges.stream()
-                .sorted(Comparator.comparing(c -> c.getContest().getStartTime()))
-                .map(c -> getContestRankUpdate(c.getContest(), c.getNewRating()))
-                .toList());
-        Contest lastContest = rankInfo.getLastContest();
-        if (!cfRatingChanges.isEmpty()) {
-            Contest lastContestForHandle = cfRatingChanges.get(cfRatingChanges.size() - 1).getContest();
-            if (lastContest != null && !lastContestForHandle.equals(lastContest)) {
-                Integer currentRating = rankInfo.getCurrentRating(handle);
-                ranks.add(getContestRankUpdate(lastContest, currentRating));
+        if (rankInfo.hasHandle(handle)) {
+            List<RatingChange> cfRatingChanges = repository.findByHandle(handle);
+            ArrayList<ContestRankUpdate> ranks = new ArrayList<>(cfRatingChanges.stream()
+                    .sorted(Comparator.comparing(c -> c.getContest().getStartTime()))
+                    .map(c -> getContestRankUpdate(c.getContest(), c.getNewRating()))
+                    .toList());
+            Contest lastContest = rankInfo.getLastContest();
+            if (!cfRatingChanges.isEmpty()) {
+                Contest lastContestForHandle = cfRatingChanges.get(cfRatingChanges.size() - 1).getContest();
+                if (lastContest != null && !lastContestForHandle.equals(lastContest)) {
+                    Integer currentRating = rankInfo.getCurrentRating(handle);
+                    ranks.add(getContestRankUpdate(lastContest, currentRating));
+                }
             }
+            return ranks;
         }
-        return ranks;
+        else {
+            return List.of();
+        }
     }
 
     @GetMapping("/gethandle")

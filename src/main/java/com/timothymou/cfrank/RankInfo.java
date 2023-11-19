@@ -48,8 +48,8 @@ public class RankInfo {
         this.firstContest = new HashMap<>();
     }
 
-    public boolean hasContest(Integer contestId) {
-        return contestIdToRanks.containsKey(contestId);
+    public boolean doesNotHaveContest(Integer contestId) {
+        return !contestIdToRanks.containsKey(contestId);
     }
 
     public Integer getCurrentRating(String handle) {
@@ -101,5 +101,9 @@ public class RankInfo {
 
     public Integer queryRank(Integer contestId, Integer rating) {
         return contestIdToRanks.get(contestId).get(rating - MIN_RATING);
+    }
+
+    public boolean hasHandle(String handle) {
+        return handleToCurrentRating.containsKey(handle);
     }
 }

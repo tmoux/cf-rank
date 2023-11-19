@@ -68,11 +68,11 @@ public class ContestUpdater {
         List<Contest> contests = cfApiHandler.getAvailableContests()
                 .stream()
                 .map(Contest::new)
-                .filter(c -> !rankInfo.hasContest(c.getId()))
+                .filter(c -> rankInfo.doesNotHaveContest(c.getId()))
                 .sorted(Comparator.comparing(Contest::getStartTime)).toList();
         log.info("Adding contests: {}", contests.stream().map(Contest::getId).toList());
         for (Contest contest : contests) {
-            if (!rankInfo.hasContest(contest.getId())) {
+            if (rankInfo.doesNotHaveContest(contest.getId())) {
                 log.info("Updating contest {}, time = {}", contest.getId(), contest.getStartTime());
                 this.updateContest(contest);
             }

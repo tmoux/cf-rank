@@ -50,7 +50,6 @@ API interface:
 
 TODO:
 - Cache unrated contests so we don't needlessly query them again.
-- Fix bug w/ error from CF API (handle 524 error, need out-of-order updates)
 
 - Fix bug w/ capitalization of handles
 - Add handler for root, simple web page UI
@@ -59,8 +58,6 @@ TODO:
   - Ensure contests are processed in order of start time
 - Should we combine Div. 1/ Div. 2 contests?
 
-
-400 means bad request, add to list of contests to ignore
-anything else means other problem w/ CF server, ignore
+- Refactor RankInfo offset-list into its own class (parameterized by offset/min rating)
 
  */

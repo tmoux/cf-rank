@@ -72,5 +72,6 @@ public class HandleControllerTest {
                 new ContestRankUpdate(c3, 1, 2500));
         assertThat(handleController.getHandle("A")).isEqualTo(expectedA3);
         assertThat(handleController.getHandle("D")).isEqualTo(expectedD3);
+        assertThat(handleController.getHandle("a")).isEqualTo(List.of());
     }
 }
