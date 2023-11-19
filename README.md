@@ -2,15 +2,18 @@ One nice feature that Atcoder user profiles have is the ability to view a user's
 Unfortunately, Codeforces does not support this feature, and even Atcoder only supports this for the top 100 ranks.
 
 This is a simple REST API service that allows you to query any Codeforces user's ranking history.
-Currently, it only supports global rankings (i.e., inactive users are still counted), and so its rankings may slightly differ from the current rankings that are shown here: https://codeforces.com/ratings.
+Currently, it only supports global rankings (i.e., inactive users are still counted), and so its rankings may slightly differ from the current rankings that are shown at https://codeforces.com/ratings.
+It can be used, for instance, to power websites or browser extensions that added extra rank information when browsing Codeforces profiles.
 
 Queries are done by making a GET request to the endpoint `/gethandle` with the parameter `handle={handle}`.
 
-For instance, we can access the ranking history of the user [Low-Deny-Cup](https://codeforces.com/profile/Low-Deny-Cup) using the command
+For instance, we can access the ranking history of the user [Low-Deny-Cup](https://codeforces.com/profile/Low-Deny-Cup)[^1] using the command
 
 ```
 curl 'http://{server-name}/gethandle?handle=Low-Deny-Cup'
 ```
+
+[^1]: This user was chosen simply because it was high-rated user with a relatively low number of rated contests.
 
 <details>
   <summary>Formatted output</summary>
@@ -157,3 +160,16 @@ You can start a local server on `localhost:8080` with `./gradlew bootRun`. Note 
 If you would like to spin up a server with actual Codeforces data, you can run `./gradlew bootRun --args='--spring.profiles.active=prod'`.
 
 You can also check out `INSTALLING.md` for instructions on how to deploy the application.
+
+### Implementation notes
+
+The application uses the Codeforces API to get a list of all rated contests and then downloads the rating changes for each contest in chronological order. This process is slow, as we cannot breach Codeforces' rate limit of 1 request per 2 seconds.
+However, it only needs to be done once.
+Assuming we're using a persistent database, the API requests don't need to be repeated on server restarts.
+The server runs a check every 24 hours to look for new contests and update them as needed.
+
+Answering GET requests does not need to call the Codeforces API at all.
+Instead, the application maintains a database of all rating changes, as well a lookup table that stores the ranking of a user with rating X after a contest C.
+Since ratings are roughly in the range [-100, 4000] and there are less than 2000 rated contests so far, this is a small enough table to store in memory and do efficient lookups.
+
+The lookup table can also handle non-chronological contest updates, simply by recomputing all contest updates after this point.

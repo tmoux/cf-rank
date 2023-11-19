@@ -51,7 +51,6 @@ API interface:
 TODO:
 - Cache unrated contests so we don't needlessly query them again.
 
-- Fix bug w/ capitalization of handles
 - Add handler for root, simple web page UI
 
 - Write http API tests? (random port, mockmvc)?
