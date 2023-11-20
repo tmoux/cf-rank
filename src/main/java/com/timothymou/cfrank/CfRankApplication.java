@@ -41,18 +41,8 @@ Stretch goals:
   - Handle inactive users (ignored for now)
   -
 
-API interface:
-- PUT /checkcontests: Check for new contest updates
-
-- PUT /updatecontest?contest={id}: Update a new contest (ID)
-
-- GET /gethandle?handle={handle}: Get a handle's ranks (active/inactive)
 
 TODO:
-- Cache unrated contests so we don't needlessly query them again.
-
-- Add handler for root, simple web page UI
-
 
 
 - Write http API tests? (random port, mockmvc)?

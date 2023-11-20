@@ -80,7 +80,7 @@ public class ScheduledUpdaterTest {
         verify(contestUpdater, times(5)).updateContest(any());
 
         ResponseEntity<List<ContestRankUpdate>> response = restTemplate.exchange(
-                "http://localhost:" + port + "/gethandle?handle=rainboy",
+                "http://localhost:" + port + "/?handle=rainboy",
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<>() {

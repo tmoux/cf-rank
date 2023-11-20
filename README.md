@@ -5,12 +5,12 @@ This is a simple REST API service that allows you to query any Codeforces user's
 Currently, it only supports global rankings (i.e., inactive users are still counted), and so its rankings may slightly differ from the current rankings that are shown at https://codeforces.com/ratings.
 It can be used, for instance, to power websites or browser extensions that added extra rank information when browsing Codeforces profiles.
 
-Queries are done by making a GET request to the endpoint `/gethandle` with the parameter `handle={handle}`.
+Queries are done by making a GET request to the endpoint `/` with the parameter `handle={handle}`.
 
 For instance, we can access the ranking history of the user [Low-Deny-Cup](https://codeforces.com/profile/Low-Deny-Cup)[^1] using the command
 
 ```
-curl 'http://{server-name}/gethandle?handle=Low-Deny-Cup'
+curl 'http://{server-name}/?handle=Low-Deny-Cup'
 ```
 
 [^1]: This user was chosen simply because it was high-rated user with a relatively low number of rated contests.

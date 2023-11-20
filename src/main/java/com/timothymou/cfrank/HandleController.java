@@ -48,7 +48,7 @@ public class HandleController {
         }
     }
 
-    @GetMapping("/gethandle")
+    @GetMapping("/")
     public ResponseEntity<List<ContestRankUpdate>> getHandleAPI(@RequestParam(value = "handle") String handle) {
         List<ContestRankUpdate> rankUpdates = getHandle(handle);
         return ResponseEntity.of(Optional.of(rankUpdates));
