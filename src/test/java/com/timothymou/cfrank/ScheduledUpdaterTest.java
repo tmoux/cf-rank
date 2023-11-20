@@ -75,9 +75,6 @@ public class ScheduledUpdaterTest {
         );
         when(cfApiHandler.getAvailableContests()).thenReturn(contests);
 
-        // TODO: move these into separate file
-        // Refactor test
-
         scheduledUpdater.checkForNewContests();
         scheduledUpdater.checkForNewContests();
         verify(contestUpdater, times(5)).updateContest(any());
