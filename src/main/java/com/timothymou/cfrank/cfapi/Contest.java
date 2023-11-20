@@ -29,4 +29,7 @@ public class Contest {
     public Contest(CfContest c) {
         this(c.id(), c.startTimeSeconds());
     }
+    public Contest makeUnrated() {
+        return new Contest(this.getId(), this.getStartTime(), false);
+    }
 }

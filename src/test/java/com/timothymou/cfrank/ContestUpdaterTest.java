@@ -10,10 +10,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.timothymou.cfrank.cfapi.SampleContestData.*;
@@ -99,5 +102,18 @@ public class ContestUpdaterTest {
         assertThat(rankInfo.queryRank(2, 2500)).isEqualTo(1);
         assertThat(rankInfo.queryRank(1, 1500)).isEqualTo(3);
 
+    }
+
+    @Test
+    public void unratedContestsAreIgnored() {
+        when(cfApiHandler.getRatingChangesFromContest(1)).thenReturn(contest1);
+        when(cfApiHandler.getRatingChangesFromContest(2)).thenThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST));
+
+        contestUpdater.updateContest(C1);
+        contestUpdater.updateContest(C2);
+        contestUpdater.updateContest(C2);
+
+        verify(contestRepository).save(C1);
+        verify(contestRepository).save(C2.makeUnrated());
     }
 }
