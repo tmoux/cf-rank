@@ -157,7 +157,10 @@ curl 'http://{server-name}/gethandle?handle=Low-Deny-Cup'
 
 To install, just run the gradle wrapper: `./gradlew build`.
 You can start a local server on `localhost:8080` with `./gradlew bootRun`. Note that by default, this uses an in-memory database, and does not start with any actual rank data (it needs to query the Codeforces API for each contest, which can take a while).
-If you would like to spin up a server with actual Codeforces data, you can run `./gradlew bootRun --args='--spring.profiles.active=prod'`.
+If you would like to spin up a server with actual Codeforces data, you can run 
+```
+./gradlew bootRun --args='--spring.profiles.active=prod'
+```
 
 You can also check out `INSTALLING.md` for instructions on how to deploy the application.
 

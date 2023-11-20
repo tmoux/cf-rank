@@ -20,7 +20,10 @@ You can find a good tutorial on the general process [here](https://www.bezkoder.
    eb setenv SPRING_JPA_HIBERNATE_DDL_AUTO=update
    eb setenv SPRING_PROFILES_ACTIVE=prod
    ```
-   The database endpoint can be found in the console by going to your EB environment > configuration > edit networking and database > database endpoint. It should be of the form `xxx...xxxrds.amazonaws.com:3306`.
+
+   The environment variables can also be configured in the AWS console.   
+
+   The database endpoint can be found in the console by going to your EB environment > configuration > edit networking and database > database endpoint. It should be of the form `xxx...rds.amazonaws.com:3306`.
 8. Deploy the application with `eb deploy`.
 
 To deploy updates, you only need to run `eb deploy` again.
