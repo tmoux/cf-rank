@@ -9,46 +9,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableScheduling
 public class CfRankApplication {
-  private static final Logger log = LoggerFactory.getLogger(CfRankApplication.class);
 
   public static void main(String[] args) {
     SpringApplication.run(CfRankApplication.class, args);
   }
 
 }
-
-/*
-How to add information from a contest to the rankInfo class (add as a bean?)
-  - Initialize it from repository? Or save it between sessions?
-    - Might need to order contests by their date in former case.
-  - Might need repository of contests and their start times to handle ordering.
-  - How to use authentication? Or do some automatic updates daily to look for new contests.
-
-  Repositories:
-  - List of rating changes
-  - Contests and start times
-  - Table of ranks for each rating after each contest (need to save or no?)
-
-How to query a handle's ranks
-  - Main goal: limit API calls at all costs. Don't need to make separate API call for handle,
-    just look up handle's rating changes, then compute ranks using rankInfo
-  - Caching for a handle/at a particular point in time? Probably not worth it.
-
-How to connect to a website/browser extension
-
-
-Stretch goals:
-  - Handle inactive users (ignored for now)
-  -
-
-
-TODO:
-
-
-- Write http API tests? (random port, mockmvc)?
-  - Ensure contests are processed in order of start time
-- Should we combine Div. 1/ Div. 2 contests?
-
-- Refactor RankInfo offset-list into its own class (parameterized by offset/min rating)
-
- */
